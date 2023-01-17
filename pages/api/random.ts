@@ -1,12 +1,7 @@
 import prisma from "@/lib/prisma";
+import { Image } from "@prisma/client";
 import { randomInt } from "crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-type Data = {
-  blurHash: string;
-  previewUrl: string;
-  downloadUrl: string;
-};
 
 type Error = {
   error: string;
@@ -14,7 +9,7 @@ type Error = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data | Error>
+  res: NextApiResponse<Image | Error>
 ) {
   const { method } = req;
   switch (method) {
@@ -44,11 +39,7 @@ export default async function handler(
           });
           if (tagsOnImages) {
             const image = tagsOnImages.image;
-            res.status(200).json({
-              blurHash: image.blurHash,
-              previewUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/t_preview/${image.externalId}.jpg`,
-              downloadUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/${image.externalId}.jpg`,
-            });
+            res.status(200).json({ ...image });
           }
         } else {
           res.status(400).json({ error: "no images were found" });
