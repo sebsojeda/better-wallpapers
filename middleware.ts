@@ -9,17 +9,14 @@ const ratelimit = new Ratelimit({
 });
 
 export async function middleware(req: NextRequest) {
-  if (process.env.NODE_ENV === "development") {
-    return NextResponse.next();
+  if (process.env.NODE_ENV === "production") {
+    const ip = req.headers.get("x-real-ip");
+    const isThrottled = !ip || !(await ratelimit.limit(ip)).success;
+    if (isThrottled) {
+      return NextResponse.json({ error: "too many requests" }, { status: 429 });
+    }
   }
-
-  const ip = req.headers.get("x-real-ip");
-  const isNotLimited = !!ip && (await ratelimit.limit(ip)).success;
-  if (isNotLimited) {
-    return NextResponse.next();
-  } else {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
+  return NextResponse.next();
 }
 
 export const config = {
