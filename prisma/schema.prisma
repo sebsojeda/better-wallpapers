@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Image {
+  id           Int            @id @default(autoincrement())
+  authorName   String?        @db.VarChar(255)
+  authorUrl    String?        @db.VarChar(255)
+  blurHash     String         @db.VarChar(32)
+  externalId   String         @unique @db.VarChar(255)
+  TagsOnImages TagsOnImages[]
+}
+
+model Tag {
+  id           Int            @id @default(autoincrement())
+  name         String         @db.VarChar(255)
+  TagsOnImages TagsOnImages[]
+}
+
+model TagsOnImages {
+  imageId Int
+  image   Image @relation(fields: [imageId], references: [id])
+  tagId   Int
+  tag     Tag   @relation(fields: [tagId], references: [id])
+
+  @@id([imageId, tagId])
+  @@index([imageId])
+  @@index([tagId])
+}
