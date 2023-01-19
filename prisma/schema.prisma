@@ -9,12 +9,13 @@ datasource db {
 }
 
 model Image {
-  id           Int            @id @default(autoincrement())
-  authorName   String?        @db.VarChar(255)
-  authorUrl    String?        @db.VarChar(255)
-  blurHash     String         @db.VarChar(32)
-  externalId   String         @unique @db.VarChar(255)
-  TagsOnImages TagsOnImages[]
+  id              Int            @id @default(autoincrement())
+  authorName      String?        @db.VarChar(255)
+  authorUrl       String?        @db.VarChar(255)
+  blurHash        String         @db.VarChar(32)
+  externalId      String         @unique @db.VarChar(255)
+  externalVersion String         @db.VarChar(255)
+  TagsOnImages    TagsOnImages[]
 }
 
 model Tag {

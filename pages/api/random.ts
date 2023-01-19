@@ -43,11 +43,11 @@ export default async function handler(
             },
           });
           if (tagsOnImages) {
-            const image = tagsOnImages.image;
+            const i = tagsOnImages.image;
             res.status(200).json({
-              ...image,
-              downloadUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/${image.externalId}.jpg`,
-              previewUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/t_preview/${image.externalId}.jpg`,
+              ...i,
+              downloadUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/${i.externalVersion}/${i.externalId}.jpg`,
+              previewUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/t_preview/${i.externalVersion}/${i.externalId}.jpg`,
             });
           }
         } else {
