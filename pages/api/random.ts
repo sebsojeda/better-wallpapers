@@ -7,9 +7,14 @@ type Error = {
   error: string;
 };
 
+type Data = Image & {
+  downloadUrl: string;
+  previewUrl: string;
+};
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Image | Error>
+  res: NextApiResponse<Data | Error>
 ) {
   const { method } = req;
   switch (method) {
@@ -39,7 +44,11 @@ export default async function handler(
           });
           if (tagsOnImages) {
             const image = tagsOnImages.image;
-            res.status(200).json({ ...image });
+            res.status(200).json({
+              ...image,
+              downloadUrl: `   "https://res.cloudinary.com/better-wallpapers/image/upload/${image.externalId}.jpg"`,
+              previewUrl: `   "https://res.cloudinary.com/better-wallpapers/image/upload/t_preview/${image.externalId}.jpg"`,
+            });
           }
         } else {
           res.status(400).json({ error: "no images were found" });
