@@ -46,8 +46,8 @@ export default async function handler(
             const image = tagsOnImages.image;
             res.status(200).json({
               ...image,
-              downloadUrl: `   "https://res.cloudinary.com/better-wallpapers/image/upload/${image.externalId}.jpg"`,
-              previewUrl: `   "https://res.cloudinary.com/better-wallpapers/image/upload/t_preview/${image.externalId}.jpg"`,
+              downloadUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/${image.externalId}.jpg`,
+              previewUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/t_preview/${image.externalId}.jpg`,
             });
           }
         } else {
