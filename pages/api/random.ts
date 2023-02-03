@@ -47,7 +47,7 @@ export default async function handler(
             res.status(200).json({
               ...i,
               downloadUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/${i.externalVersion}/${i.externalId}.jpg`,
-              previewUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/t_preview/${i.externalVersion}/${i.externalId}.jpg`,
+              previewUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/c_fill,h_300,w_450/${i.externalVersion}/${i.externalId}.jpg`,
             });
           }
         } else {
