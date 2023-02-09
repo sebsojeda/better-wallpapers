@@ -2,7 +2,7 @@ import Image from "next/image";
 
 async function getRandomWallpaper() {
   const res = await fetch(
-    `https://${process.env.VERCEL_URL}/api/random?tag=editorial`
+    `https://www.betterwallpapers.app/api/random?tag=editorial`
   );
   const data = await res.json();
   return data;
