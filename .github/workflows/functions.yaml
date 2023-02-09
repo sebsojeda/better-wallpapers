@@ -8,11 +8,11 @@ on:
   push:
     branches:
       - main
-    path:
-      - functions
+    paths:
+      - functions/**
   pull_request:
-    path:
-      - functions
+    paths:
+      - functions/**
 
 jobs:
   deploy:
