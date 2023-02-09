@@ -5,13 +5,14 @@ import { createHash, createHmac } from "node:crypto";
 /**
  * Calculates the blurhash of an uploaded image.
  *
- * @param {import("aws-lambda").APIGatewayProxyEventV2} event
+ * @param {import("aws-lambda").APIGatewayEvent} event
+ * @param {import("aws-lambda").Context} context
  */
-export async function handler(event) {
+export async function handler(event, context) {
   const signature = event.headers["upstash-signature"];
   const currentSigningKey = process.env["QSTASH_CURRENT_SIGNING_KEY"];
   const nextSigningKey = process.env["QSTASH_NEXT_SIGNING_KEY"];
-  const url = `https://${event.requestContext.domainName}/${event.requestContext.stage}/process-image`;
+  const url = `https://${event.requestContext.domainName}`;
 
   try {
     await verify(signature, currentSigningKey, event.body, url).catch((err) => {
@@ -22,7 +23,6 @@ export async function handler(event) {
     });
   } catch (err) {
     return {
-      isBase64Encoded: false,
       statusCode: 400,
       body: err instanceof Error ? err.toString() : err,
     };
@@ -34,7 +34,6 @@ export async function handler(event) {
     body = JSON.parse(event.body);
   } catch {
     return {
-      isBase64Encoded: false,
       statusCode: 400,
       body: "Unable to parse JSON request body",
     };
@@ -42,7 +41,6 @@ export async function handler(event) {
 
   if (!!!body.imageUrl || !!!body.imageId) {
     return {
-      isBase64Encoded: false,
       statusCode: 400,
       body: "Expected key missing from request body",
     };
@@ -51,15 +49,13 @@ export async function handler(event) {
   const { imageUrl, imageId } = body;
   const { data, width, height } = await pixels(imageUrl);
   const blurHash = encode(data, width, height, 4, 3);
-  const res = JSON.stringify({ blurHash, imageId });
 
   return {
-    isBase64Encoded: false,
     statusCode: 200,
     headers: {
       "Content-Type": "application/json",
     },
-    body: res,
+    body: JSON.stringify({ blurHash, imageId }),
   };
 }
 
