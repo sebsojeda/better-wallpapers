@@ -9,6 +9,7 @@ import { createHash, createHmac } from "node:crypto";
  * @param {import("aws-lambda").Context} context
  */
 export async function handler(event, context) {
+  console.log(event);
   const signature = event.headers["upstash-signature"];
   const currentSigningKey = process.env["QSTASH_CURRENT_SIGNING_KEY"];
   const nextSigningKey = process.env["QSTASH_NEXT_SIGNING_KEY"];
