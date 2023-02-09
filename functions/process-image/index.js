@@ -38,7 +38,7 @@ export async function handler(event) {
     };
   }
 
-  if (!!body.imageUrl || !!body.imageId) {
+  if (!!!body.imageUrl || !!!body.imageId) {
     return {
       statusCode: 400,
       body: "Expected key missing from request body",
