@@ -46,7 +46,7 @@ resource "aws_lambda_function" "process_image" {
   s3_key    = aws_s3_object.lambda_process_image.key
 
   handler = "index.handler"
-  runtime = "nodejs18.x"
+  runtime = "nodejs14.x"
 
   source_code_hash = data.archive_file.lambda_process_image.output_base64sha256
 
