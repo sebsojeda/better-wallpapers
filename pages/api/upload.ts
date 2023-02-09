@@ -35,7 +35,7 @@ export default async function handler(
       }
 
       const c = new Client({
-        token: "<QSTASH_TOKEN>",
+        token: process.env["QSTASH_TOKEN"]!,
       });
 
       let form, schema;
@@ -97,9 +97,9 @@ export default async function handler(
       });
 
       await c.publishJSON({
-        url: `https://${process.env.AWS_API_ENDPOINT}/process-image`,
+        url: `${process.env.AWS_API_ENDPOINT}/process-image`,
         headers: {
-          "Upstash-Callback": "https://betterwallpapers.app/api/callback",
+          "Upstash-Callback": `https://${process.env.VERCEL_URL}/api/callback`,
         },
         body: {
           imageUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/${image.externalVersion}/${image.externalId}.jpg`,
