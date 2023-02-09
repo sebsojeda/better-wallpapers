@@ -15,6 +15,7 @@ model Image {
   blurHash        String         @db.VarChar(32)
   externalId      String         @unique @db.VarChar(255)
   externalVersion String         @db.VarChar(255)
+  visible         Boolean        @default(false)
   TagsOnImages    TagsOnImages[]
 }
 

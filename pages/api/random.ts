@@ -24,6 +24,9 @@ export default async function handler(
         const tags = tag instanceof Array ? tag : [tag];
         const count = await prisma.tagsOnImages.count({
           where: {
+            image: {
+              visible: true,
+            },
             tag: {
               OR: tags.map((name) => ({ name })),
             },
@@ -37,6 +40,9 @@ export default async function handler(
               image: true,
             },
             where: {
+              image: {
+                visible: true,
+              },
               tag: {
                 OR: tags.map((name) => ({ name })),
               },

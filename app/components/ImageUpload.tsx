@@ -53,7 +53,7 @@ export default function ImageUpload() {
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message);
+        setError(data.error);
       }
       setAuthorName("");
       setAuthorUrl("");
@@ -61,7 +61,7 @@ export default function ImageUpload() {
       setSelectedImage("");
       setSlectedFile(undefined);
     } catch {
-      setError("An unexpected error occurred.");
+      setError("An unexpected error occurred");
     }
     setUploading(false);
   }

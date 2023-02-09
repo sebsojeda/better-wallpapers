@@ -1,11 +1,15 @@
 import cloudinary from "@/lib/cloudinary";
 import prisma from "@/lib/prisma";
 import parseForm from "@/utils/parseForm";
-import { encode } from "blurhash";
 import formidable from "formidable";
-import pixels from "image-pixels";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
 import { z } from "zod";
+import { authOptions } from "./auth/[...nextauth]";
+
+type Error = {
+  error: string;
+};
 
 type Data = {
   message: string;
@@ -19,69 +23,81 @@ const validateSchema = z.object({
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Data | Error>
 ) {
-  let form;
+  const { method } = req;
+  switch (method) {
+    case "POST":
+      const session = await getServerSession(req, res, authOptions);
+      if (!session) {
+        return res.status(401).json({ error: "unauthorized" });
+      }
 
-  try {
-    form = await parseForm(req);
-  } catch (e) {
-    console.error(e);
-    return res.status(400).json({ message: "An unexpected error occurred" });
+      let form, schema;
+
+      try {
+        form = await parseForm(req);
+      } catch (e) {
+        console.error(e);
+        return res.status(400).json({ error: "Unable to parse form" });
+      }
+
+      if (!!!form.files.image) {
+        return res.status(400).json({ error: "No image is attached" });
+      }
+
+      try {
+        schema = validateSchema.parse(form.fields);
+      } catch (err: any) {
+        console.error(err);
+        return res.status(400).json({ error: err.errors[0].message });
+      }
+
+      const file = form.files.image as formidable.File;
+      const { authorName, authorUrl, tags } = schema;
+
+      const upload = await cloudinary.uploader.upload(file.filepath, {
+        upload_preset: "default",
+      });
+
+      const image = await prisma.image.create({
+        data: {
+          blurHash: "",
+          externalId: upload.public_id,
+          externalVersion: `v${upload.version}`,
+          authorName: authorName as string,
+          authorUrl: authorUrl as string,
+          visible: false,
+        },
+      });
+
+      (tags as string).split(",").forEach(async (substr) => {
+        const name = substr.trim();
+        const tag = await prisma.tag.upsert({
+          where: {
+            name,
+          },
+          update: {},
+          create: {
+            name,
+          },
+        });
+
+        await prisma.tagsOnImages.create({
+          data: {
+            tagId: tag.id,
+            imageId: image.id,
+          },
+        });
+      });
+
+      res.status(200).json({ message: "ok" });
+      break;
+    default:
+      res.setHeader("Allow", ["POST"]);
+      res.status(405).end(`Method ${method} Not Allowed`);
+      break;
   }
-
-  if (!!!form.files.image) {
-    return res.status(400).json({ message: "No image is attached" });
-  }
-
-  try {
-    validateSchema.parse(form.fields);
-  } catch (err: any) {
-    console.error(err);
-    return res.status(400).json({ message: err.errors[0].message });
-  }
-
-  const file = form.files.image as formidable.File;
-  const { authorName, authorUrl, tags } = form.fields;
-
-  const upload = await cloudinary.uploader.upload(file.filepath, {
-    upload_preset: "default",
-  });
-
-  const { data, width, height } = await pixels(file.filepath);
-  const blurHash = encode(data, width, height, 4, 3);
-
-  const image = await prisma.image.create({
-    data: {
-      blurHash: blurHash,
-      externalId: upload.public_id,
-      externalVersion: `v${upload.version}`,
-      authorName: authorName as string,
-      authorUrl: authorUrl as string,
-    },
-  });
-
-  (tags as string).split(",").forEach(async (substr) => {
-    const name = substr.trim();
-    const tag = await prisma.tag.upsert({
-      where: {
-        name,
-      },
-      update: {},
-      create: {
-        name,
-      },
-    });
-
-    await prisma.tagsOnImages.create({
-      data: {
-        tagId: tag.id,
-        imageId: image.id,
-      },
-    });
-  });
-
-  return res.status(200).json({ message: "ok" });
 }
 
 export const config = {
