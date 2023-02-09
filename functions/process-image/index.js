@@ -2,17 +2,17 @@ import { Receiver } from "@upstash/qstash";
 import { encode } from "blurhash";
 import pixels from "image-pixels";
 
-const r = new Receiver({
-  currentSigningKey: process.env["QSTASH_CURRENT_SIGNING_KEY"],
-  nextSigningKey: process.env["QSTASH_NEXT_SIGNING_KEY"],
-});
-
 /**
  * Calculates the blurhash of an uploaded image.
  *
  * @param {import("aws-lambda").APIGatewayProxyEventV2} event
  */
 export async function handler(event) {
+  const r = new Receiver({
+    currentSigningKey: process.env["QSTASH_CURRENT_SIGNING_KEY"],
+    nextSigningKey: process.env["QSTASH_NEXT_SIGNING_KEY"],
+  });
+
   try {
     await r.verify({
       signature: event.headers["upstash-signature"],
