@@ -11,7 +11,7 @@ export async function handler(event) {
   const signature = event.headers["upstash-signature"];
   const currentSigningKey = process.env["QSTASH_CURRENT_SIGNING_KEY"];
   const nextSigningKey = process.env["QSTASH_NEXT_SIGNING_KEY"];
-  const url = `https://${event.requestContext.domainName}`;
+  const url = `https://${event.requestContext.domainName}/${event.requestContext.stage}/process-image`;
 
   try {
     await verify(signature, currentSigningKey, event.body, url).catch((err) => {
