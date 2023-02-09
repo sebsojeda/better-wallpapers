@@ -1,6 +1,7 @@
 import cloudinary from "@/lib/cloudinary";
 import prisma from "@/lib/prisma";
 import parseForm from "@/utils/parseForm";
+import { Client } from "@upstash/qstash";
 import formidable from "formidable";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
@@ -32,6 +33,10 @@ export default async function handler(
       if (!session) {
         return res.status(401).json({ error: "unauthorized" });
       }
+
+      const c = new Client({
+        token: "<QSTASH_TOKEN>",
+      });
 
       let form, schema;
 
@@ -89,6 +94,17 @@ export default async function handler(
             imageId: image.id,
           },
         });
+      });
+
+      await c.publishJSON({
+        url: `https://${process.env.AWS_API_ENDPOINT}/process-image`,
+        headers: {
+          "Upstash-Callback": "https://betterwallpapers.app/api/callback",
+        },
+        body: {
+          imageUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/${image.externalVersion}/${image.externalId}.jpg`,
+          imageId: image.id,
+        },
       });
 
       res.status(200).json({ message: "ok" });

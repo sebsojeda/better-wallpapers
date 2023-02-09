@@ -38,19 +38,20 @@ export async function handler(event) {
     };
   }
 
-  if (!body.imageUrl) {
+  if (!body.imageUrl || !body.imageId) {
     return {
       statusCode: 400,
-      body: "Key 'imageUrl' missing from request body",
+      body: "Expected key missing from request body",
     };
   }
 
-  const { data, width, height } = await pixels(body.imageUrl);
+  const { imageUrl, imageId } = body;
+  const { data, width, height } = await pixels(imageUrl);
   const blurHash = encode(data, width, height, 4, 3);
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ blurHash }),
+    body: JSON.stringify({ blurHash, imageId }),
   };
 }
 

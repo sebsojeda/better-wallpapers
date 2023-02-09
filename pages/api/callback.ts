@@ -22,6 +22,7 @@ export default async function handler(
   const { method } = req;
   switch (method) {
     case "POST":
+      console.log(req);
       let schema;
       try {
         schema = validateSchema.parse(req.body);
