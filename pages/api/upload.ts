@@ -100,6 +100,7 @@ export default async function handler(
         topic: "process-image",
         headers: {
           "Upstash-Callback": `https://${process.env.VERCEL_URL}/api/callback`,
+          Accept: "application/json",
         },
         body: {
           imageUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/c_fill,h_300,w_450/${image.externalVersion}/${image.externalId}.jpg`,

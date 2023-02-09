@@ -22,6 +22,7 @@ export async function handler(event) {
     });
   } catch (err) {
     return {
+      isBase64Encoded: false,
       statusCode: 400,
       body: err instanceof Error ? err.toString() : err,
     };
@@ -33,6 +34,7 @@ export async function handler(event) {
     body = JSON.parse(event.body);
   } catch {
     return {
+      isBase64Encoded: false,
       statusCode: 400,
       body: "Unable to parse JSON request body",
     };
@@ -40,6 +42,7 @@ export async function handler(event) {
 
   if (!!!body.imageUrl || !!!body.imageId) {
     return {
+      isBase64Encoded: false,
       statusCode: 400,
       body: "Expected key missing from request body",
     };
@@ -50,7 +53,11 @@ export async function handler(event) {
   const blurHash = encode(data, width, height, 4, 3);
 
   return {
+    isBase64Encoded: false,
     statusCode: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ blurHash, imageId }),
   };
 }
