@@ -13,7 +13,8 @@ export async function handler(event, context) {
   const signature = event.headers["upstash-signature"];
   const currentSigningKey = process.env["QSTASH_CURRENT_SIGNING_KEY"];
   const nextSigningKey = process.env["QSTASH_NEXT_SIGNING_KEY"];
-  const url = `https://${event.requestContext.domainName}`;
+  const domainName = event.headers["x-amzn-lambda-forwarded-host"];
+  const url = `https://${domainName}`;
 
   try {
     await verify(signature, currentSigningKey, event.body, url).catch((err) => {
