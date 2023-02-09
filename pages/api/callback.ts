@@ -25,7 +25,9 @@ export default async function handler(
       let schema, body;
 
       try {
-        body = JSON.parse(req.body.body);
+        body = JSON.parse(
+          Buffer.from(req.body.body, "base64").toString("ascii")
+        );
       } catch {
         console.error("Unable to parse request body");
         return res.status(400).json({ error: "Unable to parse request body" });
