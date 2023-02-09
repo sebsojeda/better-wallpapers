@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { verifySignature } from "@upstash/qstash/nextjs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 
@@ -15,7 +16,7 @@ const validateSchema = z.object({
   imageId: z.number({ required_error: "Image id is required" }),
 });
 
-export default async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data | Error>
 ) {
@@ -57,3 +58,11 @@ export default async function handler(
       break;
   }
 }
+
+export default verifySignature(handler);
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
