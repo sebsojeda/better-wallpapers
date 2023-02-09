@@ -10,7 +10,6 @@ async function getRandomWallpaper() {
 
 export default async function Home() {
   const randomImage = await getRandomWallpaper();
-  console.log(randomImage);
 
   return (
     <main>

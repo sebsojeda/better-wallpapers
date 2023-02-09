@@ -103,7 +103,7 @@ export default async function handler(
           Accept: "application/json",
         },
         body: {
-          imageUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/c_fill,h_300,w_450/${image.externalVersion}/${image.externalId}.jpg`,
+          imageUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/c_fill,h_300,q_100,w_450/${image.externalVersion}/${image.externalId}.jpg`,
           imageId: image.id,
         },
       });
