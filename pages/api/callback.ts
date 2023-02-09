@@ -22,10 +22,18 @@ export default async function handler(
   const { method } = req;
   switch (method) {
     case "POST":
-      console.log(req);
-      let schema;
+      let schema, body;
+
       try {
-        schema = validateSchema.parse(req.body);
+        body = JSON.parse(req.body.body);
+      } catch {
+        return res
+          .status(400)
+          .json({ error: "Unable to parse JSON request body" });
+      }
+
+      try {
+        schema = validateSchema.parse(body);
       } catch (err: any) {
         return res.status(400).json({ error: err.errors[0].message });
       }
