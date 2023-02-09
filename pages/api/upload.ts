@@ -97,7 +97,7 @@ export default async function handler(
       });
 
       await c.publishJSON({
-        url: `${process.env.AWS_API_ENDPOINT}/process-image`,
+        topic: "process-image",
         headers: {
           "Upstash-Callback": `https://${process.env.VERCEL_URL}/api/callback`,
         },
