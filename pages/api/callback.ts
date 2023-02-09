@@ -51,6 +51,7 @@ async function handler(
         },
       });
       res.status(200).json({ message: "ok" });
+      break;
     default:
       console.error(`Method ${method} Not Allowed`);
       res.setHeader("Allow", ["POST"]);
