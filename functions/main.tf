@@ -45,9 +45,9 @@ resource "aws_lambda_function" "process_image" {
   s3_bucket = var.aws_bucket
   s3_key    = aws_s3_object.lambda_process_image.key
 
-  handler = "index.handler"
-  runtime = "nodejs14.x"
-  timeout = 180
+  handler     = "index.handler"
+  runtime     = "nodejs14.x"
+  timeout     = 180
   memory_size = 512
 
   source_code_hash = data.archive_file.lambda_process_image.output_base64sha256
