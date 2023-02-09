@@ -51,6 +51,7 @@ export async function handler(event) {
   const { imageUrl, imageId } = body;
   const { data, width, height } = await pixels(imageUrl);
   const blurHash = encode(data, width, height, 4, 3);
+  const res = JSON.stringify({ blurHash, imageId });
 
   return {
     isBase64Encoded: false,
@@ -58,7 +59,7 @@ export async function handler(event) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ blurHash, imageId }),
+    body: res,
   };
 }
 
