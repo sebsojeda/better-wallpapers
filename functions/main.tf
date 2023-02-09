@@ -53,6 +53,13 @@ resource "aws_lambda_function" "process_image" {
   source_code_hash = data.archive_file.lambda_process_image.output_base64sha256
 
   role = aws_iam_role.lambda_exec.arn
+
+  environment {
+    variables = {
+      QSTASH_CURRENT_SIGNING_KEY = var.qstash_current_signing_key
+      QSTASH_NEXT_SIGNING_KEY    = var.qstash_next_signing_key
+    }
+  }
 }
 
 resource "aws_cloudwatch_log_group" "process_image" {

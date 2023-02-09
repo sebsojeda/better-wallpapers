@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@upstash/qstash": "^0.3.4",
     "blurhash": "^2.0.4",
     "image-pixels": "^2.2.2"
   },

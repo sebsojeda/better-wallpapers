@@ -9,3 +9,15 @@ variable "aws_bucket" {
   type        = string
   default     = "better-wallpapers"
 }
+
+variable "qstash_current_signing_key" {
+  description = "QStash current signing key."
+  type        = string
+  sensitive   = true
+}
+
+variable "qstash_next_signing_key" {
+  description = "QStash next signing key."
+  type        = string
+  sensitive   = true
+}
