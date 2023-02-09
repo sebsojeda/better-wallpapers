@@ -62,6 +62,11 @@ resource "aws_lambda_function" "process_image" {
   }
 }
 
+resource "aws_lambda_function_url" "process_image" {
+  function_name      = aws_lambda_function.process_image.function_name
+  authorization_type = "NONE"
+}
+
 resource "aws_cloudwatch_log_group" "process_image" {
   name = "/aws/lambda/${aws_lambda_function.process_image.function_name}"
 
