@@ -9,7 +9,6 @@ import { createHash, createHmac } from "node:crypto";
  * @param {import("aws-lambda").Context} context
  */
 export async function handler(event, context) {
-  console.log(event);
   const signature = event.headers["upstash-signature"];
   const currentSigningKey = process.env["QSTASH_CURRENT_SIGNING_KEY"];
   const nextSigningKey = process.env["QSTASH_NEXT_SIGNING_KEY"];
@@ -35,6 +34,7 @@ export async function handler(event, context) {
   try {
     body = JSON.parse(event.body);
   } catch {
+    console.error("Unable to parse JSON request body");
     return {
       statusCode: 400,
       body: "Unable to parse JSON request body",
@@ -42,6 +42,7 @@ export async function handler(event, context) {
   }
 
   if (!!!body.imageUrl || !!!body.imageId) {
+    console.error("Expected key missing from request body");
     return {
       statusCode: 400,
       body: "Expected key missing from request body",

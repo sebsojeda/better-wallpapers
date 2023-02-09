@@ -27,12 +27,14 @@ export default async function handler(
       try {
         body = JSON.parse(req.body.body);
       } catch {
+        console.error("Unable to parse request body");
         return res.status(400).json({ error: "Unable to parse request body" });
       }
 
       try {
         schema = validateSchema.parse(body);
       } catch (err: any) {
+        console.error(err.errors[0].message);
         return res.status(400).json({ error: err.errors[0].message });
       }
       const { blurHash, imageId } = schema;
@@ -47,6 +49,7 @@ export default async function handler(
       });
       res.status(200).json({ message: "ok" });
     default:
+      console.error(`Method ${method} Not Allowed`);
       res.setHeader("Allow", ["POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
       break;
