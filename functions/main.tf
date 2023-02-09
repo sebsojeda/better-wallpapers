@@ -47,6 +47,7 @@ resource "aws_lambda_function" "process_image" {
 
   handler = "index.handler"
   runtime = "nodejs14.x"
+  timeout = 120
 
   source_code_hash = data.archive_file.lambda_process_image.output_base64sha256
 
