@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header>
       <div
-        className={`${pacifico.className} text-red-500 font-bold text-4xl pb-28`}
+        className={`${pacifico.className} text-red-500 text-4xl pb-28 max-w-4xl mx-auto mt-4`}
       >
         Better Wallpapers
       </div>

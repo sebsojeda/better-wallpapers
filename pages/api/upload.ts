@@ -1,16 +1,9 @@
-import cloudinary from "@/lib/cloudinary";
 import prisma from "@/lib/prisma";
-import parseForm from "@/utils/parseForm";
 import { Client } from "@upstash/qstash";
-import formidable from "formidable";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
 import { authOptions } from "./auth/[...nextauth]";
-
-type Error = {
-  error: string;
-};
 
 type Data = {
   message: string;
@@ -20,63 +13,47 @@ const validateSchema = z.object({
   authorName: z.string().min(1, "Author name is required"),
   authorUrl: z.string().url("Author url is invalid"),
   tags: z.string().min(1, "At least one tag is required"),
+  externalId: z.string().min(1, "External ID is invalid"),
+  externalVersion: z.number({ required_error: "External version is required" }),
 });
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data | Error>
+  res: NextApiResponse<Data>
 ) {
   const { method } = req;
   switch (method) {
     case "POST":
       const session = await getServerSession(req, res, authOptions);
       if (!session) {
-        return res.status(401).json({ error: "unauthorized" });
+        console.error("unauthorized");
+        return res.status(401).json({ message: "unauthorized" });
       }
 
-      const c = new Client({
+      const qstash = new Client({
         token: process.env["QSTASH_TOKEN"]!,
       });
 
-      let form, schema;
-
-      try {
-        form = await parseForm(req);
-      } catch (e) {
-        console.error(e);
-        return res.status(400).json({ error: "Unable to parse form" });
+      const schema = validateSchema.safeParse(req.body);
+      if (!schema.success) {
+        console.error(schema.error);
+        return res
+          .status(400)
+          .json({ message: schema.error.errors[0].message });
       }
-
-      if (!!!form.files.image) {
-        return res.status(400).json({ error: "No image is attached" });
-      }
-
-      try {
-        schema = validateSchema.parse(form.fields);
-      } catch (err: any) {
-        console.error(err);
-        return res.status(400).json({ error: err.errors[0].message });
-      }
-
-      const file = form.files.image as formidable.File;
-      const { authorName, authorUrl, tags } = schema;
-
-      const upload = await cloudinary.uploader.upload(file.filepath, {
-        upload_preset: "default",
-      });
 
       const image = await prisma.image.create({
         data: {
           blurHash: "",
-          externalId: upload.public_id,
-          externalVersion: `v${upload.version}`,
-          authorName: authorName as string,
-          authorUrl: authorUrl as string,
+          externalId: schema.data.externalId,
+          externalVersion: `v${schema.data.externalVersion}`,
+          authorName: schema.data.authorName,
+          authorUrl: schema.data.authorUrl,
           visible: false,
         },
       });
 
-      (tags as string).split(",").forEach(async (substr) => {
+      schema.data.tags.split(",").forEach(async (substr) => {
         const name = substr.trim();
         const tag = await prisma.tag.upsert({
           where: {
@@ -96,7 +73,7 @@ export default async function handler(
         });
       });
 
-      await c.publishJSON({
+      await qstash.publishJSON({
         topic: "process-image",
         headers: {
           "Upstash-Callback": `https://${process.env.VERCEL_URL}/api/callback`,
@@ -116,9 +93,3 @@ export default async function handler(
       break;
   }
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};

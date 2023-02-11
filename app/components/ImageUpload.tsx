@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { FormEvent, useState } from "react";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 
 const validateSchema = z.object({
   authorName: z.string().min(1, "Author name is required"),
@@ -23,47 +23,65 @@ export default function ImageUpload() {
     e.preventDefault();
     setUploading(true);
 
-    if (!selectedFile) {
-      setError("No image is attached");
-      setUploading(false);
-      return;
-    }
-
     try {
+      if (!selectedFile) {
+        throw new Error("Image is required");
+      }
+
       validateSchema.parse({ authorName, authorUrl, tags });
-    } catch (err: any) {
-      setError(err.errors[0].message);
-      setUploading(false);
-      return;
-    }
 
-    setError("");
+      setError("");
 
-    try {
       const form = new FormData();
-      form.append("authorName", authorName);
-      form.append("authorUrl", authorUrl);
-      form.append("tags", tags);
-      form.append("image", selectedFile);
+      form.append("upload_preset", process.env.NEXT_PUBLIC_UPLOAD_PRESET!);
+      form.append("file", selectedFile);
 
-      const res = await fetch("api/upload", {
+      const upload = await fetch(process.env.NEXT_PUBLIC_CLOUDINARY_URL!, {
         method: "POST",
         body: form,
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error);
+      if (!upload.ok) {
+        throw new Error("Unable to upload image");
       }
+
+      const { public_id: externalId, version: externalVersion } =
+        await upload.json();
+
+      const save = await fetch("api/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          authorName,
+          authorUrl,
+          tags,
+          externalId,
+          externalVersion,
+        }),
+      });
+
+      if (!save.ok) {
+        throw new Error("Unable to save image data");
+      }
+
       setAuthorName("");
       setAuthorUrl("");
       setTags("");
       setSelectedImage("");
       setSlectedFile(undefined);
-    } catch {
-      setError("An unexpected error occurred");
+      setUploading(false);
+    } catch (err) {
+      if (err instanceof ZodError) {
+        setError(err.errors[0].message);
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+      setUploading(false);
     }
-    setUploading(false);
   }
 
   return (

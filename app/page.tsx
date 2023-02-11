@@ -1,4 +1,6 @@
 import Image from "next/image";
+import FadeIn from "./components/FadeIn";
+import HeroText from "./components/HeroText";
 
 async function getRandomWallpaper() {
   const res = await fetch(
@@ -13,15 +15,19 @@ export default async function Home() {
 
   return (
     <main>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-black">
-          <Image src={"/home.jpg"} width={450} height={300} alt="" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold">
-            Beautiful, high-resolution desktop wallpapers for MacOS.
-          </h1>
-        </div>
+      <div className="relative max-w-4xl mx-auto">
+        <FadeIn>
+          {!!randomImage && (
+            <Image
+              src={`https://res.cloudinary.com/better-wallpapers/image/upload/c_fill,h_400,q_100,w_600/${randomImage.externalVersion}/${randomImage.externalId}.jpg`}
+              width={600}
+              height={400}
+              className="rounded"
+              alt="Random wallpaper image."
+            />
+          )}
+        </FadeIn>
+        <HeroText />
       </div>
     </main>
   );
