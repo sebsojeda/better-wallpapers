@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-export default function HeroText() {
+export default function HeroCard() {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -23,7 +23,7 @@ export default function HeroText() {
           target="_blank"
           rel="noreferrer"
         >
-          Buy Now
+          Download Now
         </a>
       </div>
     </motion.div>

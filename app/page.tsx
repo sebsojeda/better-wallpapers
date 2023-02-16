@@ -1,16 +1,53 @@
 import { pacifico } from "@/lib/font";
+import prisma from "@/lib/prisma";
+import { randomInt } from "crypto";
 import Image from "next/image";
-import FadeIn from "./components/FadeIn";
 import Footer from "./components/Footer";
-import HeaderText from "./components/HeaderText";
-import HeroText from "./components/HeroText";
+import Header from "./components/Header";
+import HeroCard from "./components/HeroCard";
+import HeroImage from "./components/HeroImage";
 
 async function getRandomWallpaper() {
-  const res = await fetch(
-    `https://www.betterwallpapers.app/api/random?tag=editorial`
-  );
-  const data = await res.json();
-  return data;
+  const count = await prisma.tagsOnImages.count({
+    where: {
+      image: {
+        visible: true,
+      },
+      tag: {
+        name: "editorial",
+      },
+    },
+  });
+  if (count > 0) {
+    const skip = randomInt(0, count);
+    const tagsOnImages = await prisma.tagsOnImages.findFirst({
+      skip,
+      include: {
+        image: true,
+      },
+      where: {
+        image: {
+          visible: true,
+        },
+        tag: {
+          name: "editorial",
+        },
+      },
+    });
+    if (tagsOnImages) {
+      return {
+        externalId: tagsOnImages.image.externalId,
+      };
+    } else {
+      return {
+        externalId: "m6txptqgimg8i4cnjaa5",
+      };
+    }
+  } else {
+    return {
+      externalId: "m6txptqgimg8i4cnjaa5",
+    };
+  }
 }
 
 export default async function Home() {
@@ -18,30 +55,21 @@ export default async function Home() {
 
   return (
     <>
-      <main>
+      <Header />
+      <main className="pt-48">
         <div className="relative max-w-5xl mx-auto px-4">
-          <FadeIn>
-            {!!randomImage && (
-              <Image
-                src={`https://res.cloudinary.com/better-wallpapers/image/upload/c_fill,h_400,q_100,w_600/${randomImage.externalId}.jpg`}
-                width={600}
-                height={400}
-                className="rounded"
-                alt="Random wallpaper image."
-              />
-            )}
-          </FadeIn>
-          <HeroText />
-          <div className="mt-44">
+          <HeroImage imageId={randomImage.externalId} />
+          <HeroCard />
+          <div className="mt-44 max-w-xl">
             <h3 className="text-3xl font-bold">
               Every screen deserves a stunning wallpaper
             </h3>
-            <p className="text-neutral-500">
+            <p className="text-neutral-500 mt-1">
               High-quality and visually appealing images for every screen. 4k
               display? No problem. You&apos;ll love your next wallpaper.
             </p>
           </div>
-          <div className="bg-gradient-to-r from-yellow-100 to-red-100 p-4 rounded max-w-4xl ml-auto h-60">
+          <div className="mt-44 bg-gradient-to-r from-yellow-100 to-red-100 p-4 rounded h-60 flex justify-between items-end">
             <div className={`${pacifico.className} text-lg`}>
               Better Wallpapers
             </div>
@@ -55,7 +83,6 @@ export default async function Home() {
             </div>
           </div>
         </div>
-        <HeaderText />
       </main>
       <Footer />
     </>
