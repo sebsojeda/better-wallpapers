@@ -14,7 +14,6 @@ const validateSchema = z.object({
   authorUrl: z.string().url("Author url is invalid"),
   tags: z.string().min(1, "At least one tag is required"),
   externalId: z.string().min(1, "External ID is invalid"),
-  externalVersion: z.number({ required_error: "External version is required" }),
 });
 
 export default async function handler(
@@ -46,7 +45,6 @@ export default async function handler(
         data: {
           blurHash: "",
           externalId: schema.data.externalId,
-          externalVersion: `v${schema.data.externalVersion}`,
           authorName: schema.data.authorName,
           authorUrl: schema.data.authorUrl,
           visible: false,
@@ -80,7 +78,7 @@ export default async function handler(
           Accept: "application/json",
         },
         body: {
-          imageUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/c_fill,h_300,q_100,w_450/${image.externalVersion}/${image.externalId}.jpg`,
+          imageUrl: `https://res.cloudinary.com/better-wallpapers/image/upload/c_fill,h_300,q_100,w_450/${image.externalId}.jpg`,
           imageId: image.id,
         },
       });

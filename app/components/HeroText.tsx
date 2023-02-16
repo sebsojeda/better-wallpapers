@@ -7,7 +7,7 @@ export default function HeroText() {
     <motion.div
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1, top: "2.5rem" }}
-      className="absolute right-0 p-6 bg-white shadow-md rounded border border-neutral-200 max-w-md"
+      className="absolute right-4 p-6 bg-white shadow-md rounded border border-neutral-200 max-w-md"
     >
       <h1 className="text-3xl font-bold">
         Beautiful, high-resolution desktop wallpapers for MacOS.

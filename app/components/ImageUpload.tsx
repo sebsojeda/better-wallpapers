@@ -45,8 +45,7 @@ export default function ImageUpload() {
         throw new Error("Unable to upload image");
       }
 
-      const { public_id: externalId, version: externalVersion } =
-        await upload.json();
+      const { public_id: externalId } = await upload.json();
 
       const save = await fetch("api/upload", {
         method: "POST",
@@ -58,7 +57,6 @@ export default function ImageUpload() {
           authorUrl,
           tags,
           externalId,
-          externalVersion,
         }),
       });
 
