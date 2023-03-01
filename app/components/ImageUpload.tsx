@@ -84,7 +84,10 @@ export default function ImageUpload() {
 
   return (
     <>
-      <form onSubmit={handleUpload} className="inline-flex flex-col space-y-6">
+      <form
+        onSubmit={handleUpload}
+        className="inline-flex flex-col space-y-6 p-6"
+      >
         <label>
           Author Name:
           <input
@@ -132,10 +135,10 @@ export default function ImageUpload() {
               }
             }}
           />
-          <div className="w-[450px] h-[300px] border-2 border-dashed rounded flex items-center justify-center hover:cursor-pointer">
+          <div className="max-w-[450px] h-[300px] border-2 border-dashed rounded flex items-center justify-center hover:cursor-pointer">
             {selectedImage ? (
               <Image
-                className="object-contain w-[450px] h-[300px]"
+                className="object-contain max-w-[450px] h-[300px]"
                 src={selectedImage}
                 width={300}
                 height={450}
@@ -153,12 +156,12 @@ export default function ImageUpload() {
           disabled={uploading}
           className={`${
             uploading ? "opacity-50" : "opacity-100"
-          } bg-red-500 text-white p-3 w-32 rounded`}
+          } bg-blue-500 text-white p-3 w-32 rounded`}
         >
           {uploading ? "Uploading" : "Upload"}
         </button>
       </form>
-      <div className={`pt-5 text-red-500 ${!!error ? "block" : "hidden"}`}>
+      <div className={`pt-5 text-blue-500 ${!!error ? "block" : "hidden"}`}>
         {error}
       </div>
     </>
