@@ -12,7 +12,6 @@ import nature from "public/assets/nature.jpg";
 import patterns from "public/assets/patterns.jpg";
 import quotes from "public/assets/quotes.jpg";
 import space from "public/assets/space.jpg";
-import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import WallpaperRoll from "./components/WallpaperRoll";
 
@@ -65,14 +64,14 @@ export default async function Home() {
 
       <div className="relative mx-auto max-w-3xl mt-16 px-4 sm:px-8 lg:px-12 py-6">
         <h2 className="font-bold text-4xl sm:text-5xl">
-          Always keep your wallpaper interesting.
+          Never grow tired of your wallpaper.
         </h2>
         <p className="text-neutral-600 mt-10 text-base">
           Refresh your wallpaper as often as you&apos;d like. Update one screen,
           or all of them. Prefer certain categories? We got you covered.
         </p>
-        <div className="mt-10 overflow-hidden flex justify-center">
-          <div className="relative w-[450px] rounded-lg overflow-hidden h-[400px] bg-white">
+        <div className="mt-10 overflow-hidden flex justify-start">
+          <div className="flex-none relative w-[450px] rounded-lg overflow-hidden h-[400px] bg-white">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white z-10"></div>
             <div className="border border-neutral-200 p-4">
               <div className="font-bold">Better Wallpapers</div>
@@ -256,7 +255,7 @@ export default async function Home() {
         />
       </div>
 
-      <div className="flex-wrap gap-4 rounded-lg bg-gradient-to-br from-neutral-100 to-neutral-50 via-neutral-200 max-w-3xl mx-auto px-4 sm:px-8 lg:px-12 py-6 mt-16 flex justify-between">
+      <div className="flex-wrap gap-4 rounded-lg bg-gradient-to-br from-zinc-100 to-zinc-50 max-w-3xl mx-auto px-4 sm:px-8 lg:px-12 py-6 mt-16 flex justify-between">
         <div className="font-bold text-2xl whitespace-nowrap">
           Better Wallpapers
         </div>
@@ -265,7 +264,14 @@ export default async function Home() {
         </div>
       </div>
 
-      <Footer />
+      <footer className="max-w-3xl mx-auto border-t border-t-neutral-200 mt-16">
+        <div className="px-4 sm:px-8 lg:px-12 py-6">
+          <span className="text-neutral-500 text-xs">
+            Copyright &copy; {new Date().getFullYear()} Better Wallpapers. All
+            Rights Reserved.
+          </span>
+        </div>
+      </footer>
     </>
   );
 }

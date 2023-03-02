@@ -1,6 +1,7 @@
 "use client";
 
 import { loadImage } from "@/lib/cloudinary";
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 type WallpaperRollProps = {
@@ -9,7 +10,11 @@ type WallpaperRollProps = {
 
 export default function WallpaperRoll({ images }: WallpaperRollProps) {
   return (
-    <div className="flex gap-5 lg:gap-8 overflow-hidden justify-center mt-16">
+    <motion.div
+      initial={{ opacity: 0, top: 20 }}
+      whileInView={{ opacity: 1, top: 0 }}
+      className="flex gap-5 lg:gap-8 overflow-hidden justify-center mt-16"
+    >
       {images.map((src) => (
         <div
           key={src}
@@ -25,6 +30,6 @@ export default function WallpaperRoll({ images }: WallpaperRollProps) {
           />
         </div>
       ))}
-    </div>
+    </motion.div>
   );
 }
