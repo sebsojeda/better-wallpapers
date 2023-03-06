@@ -18,6 +18,7 @@
     "@upstash/qstash": "^0.3.4",
     "@upstash/ratelimit": "^0.1.5",
     "@upstash/redis": "^1.19.1",
+    "@vercel/analytics": "^0.1.11",
     "eslint": "8.32.0",
     "eslint-config-next": "^13.2.1",
     "framer-motion": "^9.0.2",

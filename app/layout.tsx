@@ -1,5 +1,6 @@
 import { inter } from "@/lib/font";
 import { Metadata } from "next";
+import Analytics from "./Analytics";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body>{children}</body>
+      <Analytics />
     </html>
   );
 }
