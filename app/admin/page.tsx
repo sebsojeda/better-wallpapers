@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "pages/api/auth/[...nextauth]";
-import ImageUpload from "../components/ImageUpload";
+import ImageUpload from "./ImageUpload";
 
 export default async function Admin() {
   const session = await getServerSession(authOptions);

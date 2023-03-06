@@ -7,8 +7,16 @@ import appBadge from "public/assets/download-on-the-mac-app-store-badge.svg";
 export default function Hero() {
   return (
     <motion.header initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}>
-      <div className="px-4 sm:px-8 lg:px-12 py-6 border-b border-b-neutral-200 mx-auto max-w-3xl flex justify-between items-end">
-        <div className="font-bold text-2xl sm:text-3xl">Better Wallpapers</div>
+      <div className="px-4 sm:px-8 lg:px-12 py-6 border-b border-b-neutral-200 mx-auto max-w-5xl flex justify-between items-end">
+        <div>
+          <span className="mr-5 border border-neutral-300 px-1 rounded-md bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-500 bg-clip-text text-transparent font-bold text-2xl sm:text-3xl">
+            W
+          </span>
+          <span className="font-bold text-2xl sm:text-3xl hidden sm:inline">
+            Better Wallpapers 2
+          </span>
+        </div>
+
         <a
           href="https://github.com/sebsojeda/better-wallpapers"
           className="text-sm text-neutral-500 flex items-end gap-1 hover:text-blue-500"
@@ -30,15 +38,19 @@ export default function Hero() {
           Edit in GitHub
         </a>
       </div>
-      <div className="mx-auto max-w-3xl mt-12">
+      <div className="mx-auto max-w-5xl mt-16">
         <div className="px-4 sm:px-8 lg:px-12">
           <h1 className="font-bold text-4xl sm:text-5xl">
-            Beautiful, high-resolution desktop wallpapers for{" "}
-            <span className="text-blue-500">MacOS</span>.
+            Beautiful, high-resolution wallpapers for{" "}
+            <span className="bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-500 bg-clip-text text-transparent">
+              MacOS.
+            </span>
           </h1>
           <div className="mt-6 text-base text-neutral-600">
-            Endless curated images featuring categories such as nature,
-            patterns, quotes, animals, and more.
+            Transform your desktop into a stunning masterpiece. From nature and
+            abstract designs to animal and pattern wallpapers, you can customize
+            your MacOS desktop with the perfect wallpaper that reflects your
+            personality and style.
           </div>
           <div className="mt-6">
             <Image src={appBadge} alt="Download on the Mac App Store" />
