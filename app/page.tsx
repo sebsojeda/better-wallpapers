@@ -86,8 +86,8 @@ export default async function Home() {
               Your personal touch, your unique style.
             </h2>
             <p className="text-neutral-600 mt-6 text-base">
-              Schedule your wallpaper to update hourly, daily, or weekly. Update
-              one screen, or all of them. Choose from a curated collection of
+              Schedule your wallpaper to update daily or weekly. Update one
+              screen, or all of them. Choose from a curated collection of
               categories to find the perfect wallpaper for your mood.
             </p>
           </div>
