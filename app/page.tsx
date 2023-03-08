@@ -3,6 +3,7 @@ import animals from "public/assets/animals.jpg";
 import architecture from "public/assets/architecture.jpg";
 import art from "public/assets/art.jpg";
 import badge from "public/assets/download-on-the-mac-app-store-badge.svg";
+import favorites from "public/assets/favorites.png";
 import nature from "public/assets/nature.jpg";
 import settings from "public/assets/settings.png";
 import space from "public/assets/space.jpg";
@@ -61,7 +62,7 @@ export default async function Home() {
             <p className="text-neutral-600 mt-6 text-base">
               Refresh your wallpaper as often as you&apos;d like and download
               your favorite ones to use anywhere. Find a wallpaper you love?
-              Discover the photographer&apos;s portfolio in just one click.
+              Discover the artist&apos;s portfolio in just one click.
             </p>
           </div>
           <div className="mt-10 lg:mt-0 rounded-lg overflow-hidden flex-none lg:w-1/2">
@@ -74,14 +75,28 @@ export default async function Home() {
       </div>
 
       <div className="py-16">
-        <div className="flex flex-col-reverse lg:flex-row gap-8 max-w-5xl mx-auto px-4 sm:px-8 lg:px-12">
-          <div className="rounded-lg overflow-hidden flex-none lg:w-1/2">
+        <div className="flex flex-col lg:flex-row-reverse gap-8 max-w-5xl mx-auto px-4 sm:px-8 lg:px-12">
+          <div className="flex flex-col justify-center">
+            <h2 className="font-bold text-3xl sm:text-4xl">
+              Revisit your favorites.
+            </h2>
+            <p className="text-neutral-600 mt-6 text-base">
+              Grow your own collection by saving your favorite wallpapers to
+              your favorites list. Endless inspiration at your fingertips.
+            </p>
+          </div>
+          <div className="mt-10 lg:mt-0 rounded-lg overflow-hidden flex-none lg:w-1/2">
             <Image
-              src={settings}
-              alt="Screenshot of the Better Wallpapers app settings."
+              src={favorites}
+              alt="Screenshot of the Better Wallpapers app."
             />
           </div>
-          <div className="flex flex-col justify-center max-w-2xl mt-10 lg:mt-0">
+        </div>
+      </div>
+
+      <div className="bg-neutral-100 py-16">
+        <div className="flex flex-col lg:flex-row gap-8 max-w-5xl mx-auto px-4 sm:px-8 lg:px-12">
+          <div className="flex flex-col justify-center">
             <h2 className="font-bold text-3xl sm:text-4xl">
               Your personal touch, your unique style.
             </h2>
@@ -90,6 +105,12 @@ export default async function Home() {
               screen, or all of them. Choose from a curated collection of
               categories to find the perfect wallpaper for your mood.
             </p>
+          </div>
+          <div className="mt-10 lg:mt-0 rounded-lg overflow-hidden flex-none lg:w-1/2">
+            <Image
+              src={settings}
+              alt="Screenshot of the Better Wallpapers app settings."
+            />
           </div>
         </div>
       </div>

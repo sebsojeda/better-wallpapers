@@ -49,7 +49,7 @@ export default function Hero() {
           <div className="mt-6 text-base text-neutral-600">
             Transform your desktop into a stunning masterpiece. From nature and
             abstract designs to animal and pattern wallpapers, you can customize
-            your MacOS desktop with the perfect wallpaper that reflects your
+            your desktop with the perfect wallpaper that reflects your
             personality and style.
           </div>
           <div className="mt-6">
