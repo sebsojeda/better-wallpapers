@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import animals from "public/assets/animals.jpg";
 import architecture from "public/assets/architecture.jpg";
 import art from "public/assets/art.jpg";
@@ -116,10 +117,13 @@ export default async function Home() {
       </div>
 
       <footer className="max-w-5xl mx-auto border-t border-t-neutral-200 mt-16">
-        <div className="px-4 sm:px-8 lg:px-12 pt-6 pb-16 flex flex-col-reverse justify-between items-center sm:flex-row">
-          <span className="text-neutral-500 text-sm mt-6 sm:mt-0">
+        <div className="px-4 sm:px-8 lg:px-12 pt-6 pb-16 flex flex-col-reverse justify-between items-center sm:flex-row gap-6">
+          <span className="text-neutral-500 text-sm">
             Copyright &copy; {new Date().getFullYear()} Better Wallpapers.
           </span>
+          <Link href="/privacy" className="text-neutral-500 text-sm">
+            Privacy Policy
+          </Link>
           <span>
             <Image src={badge} alt="Download on the Mac App Store" />
           </span>
