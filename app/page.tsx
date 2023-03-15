@@ -140,7 +140,9 @@ export default async function Home() {
             Privacy Policy
           </Link>
           <span>
-            <Image src={badge} alt="Download on the Mac App Store" />
+            <a href="https://apps.apple.com/app/better-wallpapers-2/id6446059710">
+              <Image src={badge} alt="Download on the Mac App Store" />
+            </a>
           </span>
         </div>
       </footer>

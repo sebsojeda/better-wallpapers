@@ -22,7 +22,9 @@ export default function Hero() {
             personality and style.
           </div>
           <div className="mt-6">
-            <Image src={appBadge} alt="Download on the Mac App Store" />
+            <a href="https://apps.apple.com/app/better-wallpapers-2/id6446059710">
+              <Image src={appBadge} alt="Download on the Mac App Store" />
+            </a>
           </div>
         </div>
       </div>
