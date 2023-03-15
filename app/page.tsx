@@ -116,8 +116,23 @@ export default async function Home() {
         </div>
       </div>
 
-      <footer className="max-w-5xl mx-auto border-t border-t-neutral-200 mt-16">
-        <div className="px-4 sm:px-8 lg:px-12 pt-6 pb-16 flex flex-col-reverse justify-between items-center sm:flex-row gap-6">
+      <div className="mt-16" id="support">
+        <div className="flex flex-col items-center py-16 gap-6 max-w-5xl mx-auto px-4 sm:px-8 lg:px-12 border-t border-t-neutral-200">
+          <div className="font-bold text-3xl sm:text-4xl">Support</div>
+          <div className="text-neutral-500 text-center">
+            For support, please email us at{" "}
+            <a
+              href="mailto:hello@betterwallpapers.app?subject=Request for support"
+              className="text-blue-500 underline"
+            >
+              hello@betterwallpapers.app
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <footer className="max-w-5xl mx-auto border-t border-t-neutral-200">
+        <div className="px-4 sm:px-8 lg:px-12 py-16 flex flex-col-reverse justify-between items-center sm:flex-row gap-6">
           <span className="text-neutral-500 text-sm">
             Copyright &copy; {new Date().getFullYear()} Better Wallpapers.
           </span>
