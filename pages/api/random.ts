@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
 import { Image } from "@prisma/client";
-import { randomInt } from "crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Error = {
@@ -33,7 +32,7 @@ export default async function handler(
           },
         });
         if (count > 0) {
-          const skip = randomInt(0, count);
+          const skip = Math.floor(Math.random() * count);
           const tagsOnImages = await prisma.tagsOnImages.findFirst({
             skip,
             include: {
