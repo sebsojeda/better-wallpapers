@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { Image } from "@prisma/client";
+import Alea from "alea";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Error = {
@@ -15,6 +16,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data | Error>
 ) {
+  const random = Alea();
   const { method } = req;
   switch (method) {
     case "GET":
@@ -32,7 +34,7 @@ export default async function handler(
           },
         });
         if (count > 0) {
-          const skip = Math.floor(Math.random() * count);
+          const skip = Math.floor(random() * count);
           const tagsOnImages = await prisma.tagsOnImages.findFirst({
             skip,
             include: {
