@@ -1,7 +1,7 @@
 import { inter } from "@/lib/font";
+import { Analytics } from "@vercel/analytics/react";
 import { Metadata } from "next";
 import Link from "next/link";
-import Analytics from "./Analytics";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,19 +17,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.className}>
-      <body>
-        <div className="px-4 sm:px-8 lg:px-12 py-6 border-b border-b-neutral-200 mx-auto max-w-5xl mb-16">
+    <html lang="en">
+      <body className={inter.className}>
+        <div className="max-w-5xl px-4 py-6 mx-auto mb-16 border-b sm:px-8 lg:px-12 border-b-neutral-200">
           <Link
             href="/"
-            className="mr-5 border border-neutral-300 px-1 rounded-lg bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-500 bg-clip-text text-transparent font-bold text-2xl sm:text-3xl"
+            className="px-1 mr-5 text-2xl font-bold text-transparent border rounded-lg border-neutral-300 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-500 bg-clip-text sm:text-3xl"
           >
             W
           </Link>
-          <span className="font-bold text-2xl sm:text-3xl">
+          <span className="text-2xl font-bold sm:text-3xl">
             Better Wallpapers 2
           </span>
-          <span className="ml-3 text-neutral-500 font-light text-xl hidden sm:inline">
+          <span className="hidden ml-3 text-xl font-light text-neutral-500 sm:inline">
             High-Resolution Images
           </span>
         </div>
